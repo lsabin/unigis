@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		xmlns:tns="http://webservices.cadi.tele2.es/tns" 
+	    targetNamespace="http://webservices.cadi.tele2.es/tns" 
+	    xmlns:tnstypes="http://webservices.cadi.tele2.es/types"
+	    elementFormDefault="qualified">
+
+	<import namespace="http://webservices.cadi.tele2.es/types" schemaLocation="Types.xsd" />	
+
+	<element name="CoverageResponseById" type="tns:CoverageResponseByIdType"/>
+	<complexType name="CoverageResponseByIdType">
+		<sequence>
+			<element name="RESULTADO" type="int"/>
+			<element minOccurs="0" name="CODIGO_DE_ERROR" type="tnstypes:errorCode"/>
+			<element minOccurs="0" name="MENSAJE_DE_ERROR" type="tnstypes:errorMessage"/>		
+			<element minOccurs="0" name="COBERTURA" type="tnstypes:coverage"/>
+			<element minOccurs="0" name="MODALIDAD" type="tnstypes:modality"/>
+			<element minOccurs="0" name="CENTRAL" type="tnstypes:fourtyChar"/>
+			<element minOccurs="0" name="CODIGO_MIGA" type="tnstypes:migaCode"/>
+			<element minOccurs="0" name="OP_DONANTE" type="tnstypes:operator"/>
+			<element minOccurs="0" name="VELOCIDAD" type="tnstypes:velocity"/>
+			<element minOccurs="0" name="DIRECCION" type="tnstypes:place"/>
+			<element minOccurs="0" name="COORDENADAS" type="tnstypes:coordinates"/>
+			<element minOccurs="0" name="NUMERO_GEOGRAFICO" type="tnstypes:geoNumber"/>
+			<element minOccurs="0" name="MOVIL_CONTACTO" type="tnstypes:mNumber"/>
+			<element minOccurs="0" name="FECHAS" type="tnstypes:fecha"/>
+		</sequence>
+	</complexType>
+</schema>

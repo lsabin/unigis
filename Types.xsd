@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<schema
+		xmlns="http://www.w3.org/2001/XMLSchema"
+		xmlns:tnstypes="http://webservices.cadi.tele2.es/types" 
+	    targetNamespace="http://webservices.cadi.tele2.es/types" >
+	<!-- La dirección introducida debe tener un máximo de 300 caracteres-->
+	<simpleType name="Address">
+		<restriction base="string">
+			<minLength value="1"/>
+			<maxLength value="300"/>
+		</restriction>
+	</simpleType>
+	<!-- el mensaje de error no debe superar los 300 caracteres -->
+	<simpleType name="errorMessage">
+		<restriction base="string">
+			<maxLength value="300"/>
+		</restriction>
+	</simpleType>
+	<!-- el código de error no debe superar los 50 caracteres -->
+	<simpleType name="errorCode">
+		<restriction base="string">
+			<maxLength value="30"/>
+		</restriction>
+	</simpleType>
+	<!--  Para campos de 50 carácteres de tamaño  -->
+	<simpleType name="fiftyChar">
+		<restriction base="string">
+			<maxLength value="50"/>
+		</restriction>
+	</simpleType>
+	<!--
+		El nombre de la central debe tener un máximo de
+		100 caracteres
+	-->
+	<simpleType name="fourtyChar">
+		<restriction base="string">
+			<maxLength value="100"/>
+		</restriction>
+	</simpleType>
+	<!--
+		El nombre del operador donante debe tener un máximo de
+		100 caracteres y puede ser una cadena vacía
+	-->
+	<simpleType name="operator">
+		<restriction base="string">
+			<maxLength value="100"/>
+			<minLength value="0"/>
+		</restriction>
+	</simpleType>
+	<!-- velocidad-->
+	<simpleType name="velocity">
+		<restriction base="string">
+			<enumeration value="1MB"/>
+			<enumeration value="3MB"/>
+			<enumeration value="6MB"/>
+			<!-- PRODUCTO NAKED. Velocidad de 10MB, 7MB y 8MB -->
+			<enumeration value="10MB"/>
+			<enumeration value="7MB"/>
+			<enumeration value="8MB"/>
+			<enumeration value="20MB"/>
+		</restriction>
+	</simpleType>
+	<!-- Se verifica que el código postal cumple el formato -->
+	<simpleType name="PostalCode">
+		<restriction base="string">
+			<pattern value="[0-9]{5}"/>
+		</restriction>
+	</simpleType>
+	<!-- Se verifica que el número geográfico cumple el formato -->
+	<simpleType name="geoNumber">
+		<restriction base="string">
+			<pattern value="[8-9]{1}[0-9]{8}"/>
+		</restriction>
+	</simpleType>
+	<!-- Se verifica que el número de teléfono móvil cumple el formato -->
+	<simpleType name="mNumber">
+		<restriction base="string">
+			<pattern value="[6-7]{1}[0-9]{8}"/>
+		</restriction>
+	</simpleType>
+	<!--  Tipo para el número de domicilio -->
+	<simpleType name="hNumber">
+		<restriction base="string">
+			<maxLength value="5"/>
+		</restriction>
+	</simpleType>
+	<!-- Se verifica que el código MIGA cumple el formato -->
+	<simpleType name="migaCode">
+		<restriction base="string">
+			<pattern value="[0-9]{7}"/>
+		</restriction>
+	</simpleType>
+	<!-- Los distintos tipos de via -->
+	<simpleType name="WayType">
+		<restriction base="string">
+			<enumeration value="AVENIDA"/>
+			<enumeration value="BARRIO"/>
+			<enumeration value="CALLE"/>
+			<enumeration value="CALLEJÓN"/>
+			<enumeration value="CAMINO"/>
+			<enumeration value="CARRERA"/>
+			<enumeration value="CARRETERA"/>
+			<enumeration value="COLONIA"/>
+			<enumeration value="COSTANILLA"/>
+			<enumeration value="GLORIETA"/>
+			<enumeration value="PASAJE"/>
+			<enumeration value="PASEO"/>
+			<enumeration value="PLAZA"/>
+			<enumeration value="POBLADO"/>
+			<enumeration value="RAMBLA"/>
+			<enumeration value="RONDA"/>
+			<enumeration value="TRAVESÍA"/>
+			<enumeration value="ARROYO"/>
+			<enumeration value="BLOQUE"/>
+			<enumeration value="PARQUE"/>
+			<enumeration value="POLÍGONO"/>
+			<enumeration value="CUESTA"/>
+			<enumeration value="RIBERA"/>
+			<enumeration value="PUENTE"/>
+			<enumeration value="MUELLE"/>
+			<enumeration value="GRUPO"/>
+			<enumeration value="SENDERO"/>
+			<enumeration value="URBANIZACIÓN"/>
+			<enumeration value="BARRIADA"/>
+			<enumeration value="ALAMEDA"/>
+		</restriction>
+	</simpleType>
+	<!-- tipo de canal -->
+	<simpleType name="ChannelType">
+		<restriction base="string">
+			<maxLength value="50"/>
+		</restriction>
+	</simpleType>
+	<!-- tipo de cobertura -->
+	<simpleType name="coverage">
+		<restriction base="string">
+			<enumeration value="AD"/>
+			<enumeration value="AI"/>
+			<enumeration value="NO"/>
+		</restriction>
+	</simpleType>
+	<!-- tipo de modalidad -->
+	<simpleType name="modality">
+		<restriction base="string">
+			<enumeration value="D+P"/>
+			<enumeration value="PV"/>
+			<enumeration value="NA"/>
+		</restriction>
+	</simpleType>
+	<!-- forzamos asi que si aparece un tipo de dato de dirección, deban incluirse el resto-->
+	<complexType name="place">
+		<sequence>
+			<element name="DIR_POBLACION" type="tnstypes:Address"/>
+			<element name="DIR_PROVINCIA" type="tnstypes:fiftyChar"/>
+			<element name="DIR_CODIGO_POSTAL" type="tnstypes:PostalCode"/>
+			<element name="DIR_TIPO_VIA" type="tnstypes:WayType"/>
+			<element name="DIR_NOMBRE_VIA" type="tnstypes:Address"/>
+			<element name="DIR_NUMERO" type="tnstypes:hNumber"/>
+		</sequence>
+	</complexType>
+	<!-- creando este tipo, forzamos que si aparece una coordenada, debe incluirse la otra-->
+	<complexType name="coordinates">
+		<sequence>
+			<element name="DIR_GEOC_X" type="string"/>
+			<element name="DIR_GEOC_Y" type="string"/>
+		</sequence>
+	</complexType>
+	<complexType name="fecha">
+		<sequence>
+			<element name="FECHA_CONSULTA" type="string"/>
+			<element name="FECHA_RESPUESTA" type="string"/>
+		</sequence>
+	</complexType>
+</schema>

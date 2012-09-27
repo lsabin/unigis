@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:ns="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservices.cadi.tele2.es" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://webservices.cadi.tele2.es" name="CoverageWebService">
+	<wsdl:types>
+		<xs:schema xmlns:tns="http://webservices.cadi.tele2.es" targetNamespace="http://webservices.cadi.tele2.es">
+			<!-- La dirección introducida debe tener un máximo de 300 caracteres-->
+			<xs:simpleType name="Address">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="1"/>
+					<xs:maxLength value="300"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!-- el mensaje de error no debe superar los 300 caracteres -->
+			<xs:simpleType name="errorMessage">
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="300"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!-- el código de error no debe superar los 50 caracteres -->
+			<xs:simpleType name="errorCode">
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="30"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!--  Para campos de 50 carácteres de tamaño  -->
+			<xs:simpleType name="fiftyChar">
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="50"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!--
+		El nombre de la central debe tener un máximo de
+		100 caracteres
+	-->
+			<xs:simpleType name="fourtyChar">
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="100"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!--
+		El nombre del operador donante debe tener un máximo de
+		100 caracteres y puede ser una cadena vacía
+	-->
+			<xs:simpleType name="operator">
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="100"/>
+					<xs:minLength value="0"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!-- velocidad-->
+			<xs:simpleType name="velocity">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="1MB"/>
+					<xs:enumeration value="3MB"/>
+					<xs:enumeration value="6MB"/>
+					<!-- PRODUCTO NAKED. Velocidad de 10MB, 7MB y 8MB -->
+					<xs:enumeration value="10MB"/>
+					<xs:enumeration value="7MB"/>
+					<xs:enumeration value="8MB"/>
+					<xs:enumeration value="20MB"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!-- Se verifica que el código postal cumple el formato -->
+			<xs:simpleType name="PostalCode">
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[0-9]{5}"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!-- Se verifica que el número geográfico cumple el formato -->
+			<xs:simpleType name="geoNumber">
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[8-9]{1}[0-9]{8}"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!-- Se verifica que el número de teléfono móvil cumple el formato -->
+			<xs:simpleType name="mNumber">
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[6-7]{1}[0-9]{8}"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!--  Tipo para el número de domicilio -->
+			<xs:simpleType name="hNumber">
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="5"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!-- Se verifica que el código MIGA cumple el formato -->
+			<xs:simpleType name="migaCode">
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[0-9]{7}"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!-- Los distintos tipos de via -->
+			<xs:simpleType name="WayType">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="AVENIDA"/>
+					<xs:enumeration value="BARRIO"/>
+					<xs:enumeration value="CALLE"/>
+					<xs:enumeration value="CALLEJÓN"/>
+					<xs:enumeration value="CAMINO"/>
+					<xs:enumeration value="CARRERA"/>
+					<xs:enumeration value="CARRETERA"/>
+					<xs:enumeration value="COLONIA"/>
+					<xs:enumeration value="COSTANILLA"/>
+					<xs:enumeration value="GLORIETA"/>
+					<xs:enumeration value="PASAJE"/>
+					<xs:enumeration value="PASEO"/>
+					<xs:enumeration value="PLAZA"/>
+					<xs:enumeration value="POBLADO"/>
+					<xs:enumeration value="RAMBLA"/>
+					<xs:enumeration value="RONDA"/>
+					<xs:enumeration value="TRAVESÍA"/>
+					<xs:enumeration value="ARROYO"/>
+					<xs:enumeration value="BLOQUE"/>
+					<xs:enumeration value="PARQUE"/>
+					<xs:enumeration value="POLÍGONO"/>
+					<xs:enumeration value="CUESTA"/>
+					<xs:enumeration value="RIBERA"/>
+					<xs:enumeration value="PUENTE"/>
+					<xs:enumeration value="MUELLE"/>
+					<xs:enumeration value="GRUPO"/>
+					<xs:enumeration value="SENDERO"/>
+					<xs:enumeration value="URBANIZACIÓN"/>
+					<xs:enumeration value="BARRIADA"/>
+					<xs:enumeration value="ALAMEDA"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!-- tipo de canal -->
+			<xs:simpleType name="ChannelType">
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="50"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!-- tipo de cobertura -->
+			<xs:simpleType name="coverage">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="AD"/>
+					<xs:enumeration value="AI"/>
+					<xs:enumeration value="NO"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!-- tipo de modalidad -->
+			<xs:simpleType name="modality">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="D+P"/>
+					<xs:enumeration value="PV"/>
+					<xs:enumeration value="NA"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<!-- forzamos asi que si aparece un tipo de dato de dirección, deban incluirse el resto-->
+			<xs:complexType name="place">
+				<xs:sequence>
+					<xs:element name="DIR_POBLACION" type="tns:Address"/>
+					<xs:element name="DIR_PROVINCIA" type="tns:fiftyChar"/>
+					<xs:element name="DIR_CODIGO_POSTAL" type="tns:PostalCode"/>
+					<xs:element name="DIR_TIPO_VIA" type="tns:WayType"/>
+					<xs:element name="DIR_NOMBRE_VIA" type="tns:Address"/>
+					<xs:element name="DIR_NUMERO" type="tns:hNumber"/>
+				</xs:sequence>
+			</xs:complexType>
+			<!-- creando este tipo, forzamos que si aparece una coordenada, debe incluirse la otra-->
+			<xs:complexType name="coordinates">
+				<xs:sequence>
+					<xs:element name="DIR_GEOC_X" type="xs:string"/>
+					<xs:element name="DIR_GEOC_Y" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="fecha">
+				<xs:sequence>
+					<xs:element name="FECHA_CONSULTA" type="xs:string"/>
+					<xs:element name="FECHA_RESPUESTA" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<!-- respuesta del servicio: resultado y datos -->
+			<xs:element name="CoverageResponse" type="tns:CoverageResponseType"/>
+			<xs:complexType name="CoverageResponseType">
+				<xs:sequence>
+					<xs:element name="RESULTADO" type="xs:int"/>
+					<xs:element minOccurs="0" name="CODIGO_DE_ERROR" type="tns:errorCode"/>
+					<xs:element minOccurs="0" name="MENSAJE_DE_ERROR" type="tns:errorMessage"/>
+					<xs:element minOccurs="0" name="ID_CONSULTA" type="xs:integer"/>
+					<xs:element minOccurs="0" name="COBERTURA" type="tns:coverage"/>
+					<xs:element minOccurs="0" name="MODALIDAD" type="tns:modality"/>
+					<xs:element minOccurs="0" name="CENTRAL" type="tns:fourtyChar"/>
+					<xs:element minOccurs="0" name="CODIGO_MIGA" type="tns:migaCode"/>
+					<xs:element minOccurs="0" name="OP_DONANTE" type="tns:operator"/>
+					<xs:element minOccurs="0" name="VELOCIDAD" type="tns:velocity"/>
+				</xs:sequence>
+			</xs:complexType>
+			<!-- parámetro de entrada-->
+			<xs:element name="CoverageRequest" type="tns:CoverageRequestType"/>
+			<xs:complexType name="CoverageRequestType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="DIRECCION" type="tns:place"/>
+					<xs:element minOccurs="0" name="COORDENADAS" type="tns:coordinates"/>
+					<xs:element minOccurs="0" name="NUMERO_GEOGRAFICO" type="tns:geoNumber"/>
+					<xs:element minOccurs="0" name="MOVIL_CONTACTO" type="tns:mNumber"/>
+					<xs:element name="CANAL" type="tns:ChannelType"/>
+					<xs:element name="USUARIO" type="tns:fiftyChar"/>
+				</xs:sequence>
+			</xs:complexType>
+			<!-- Request y Respone para la operación getServiceById -->
+			<!-- respuesta del servicio: resultado y datos -->
+			<xs:element name="CoverageResponseById" type="tns:CoverageResponseByIdType"/>
+			<xs:complexType name="CoverageResponseByIdType">
+				<xs:sequence>
+					<xs:element name="RESULTADO" type="xs:int"/>
+					<xs:element minOccurs="0" name="CODIGO_DE_ERROR" type="tns:errorCode"/>
+					<xs:element minOccurs="0" name="MENSAJE_DE_ERROR" type="tns:errorMessage"/>
+					<xs:element minOccurs="0" name="COBERTURA" type="tns:coverage"/>
+					<xs:element minOccurs="0" name="MODALIDAD" type="tns:modality"/>
+					<xs:element minOccurs="0" name="CENTRAL" type="tns:fourtyChar"/>
+					<xs:element minOccurs="0" name="CODIGO_MIGA" type="tns:migaCode"/>
+					<xs:element minOccurs="0" name="OP_DONANTE" type="tns:operator"/>
+					<xs:element minOccurs="0" name="VELOCIDAD" type="tns:velocity"/>
+					<xs:element minOccurs="0" name="DIRECCION" type="tns:place"/>
+					<xs:element minOccurs="0" name="COORDENADAS" type="tns:coordinates"/>
+					<xs:element minOccurs="0" name="NUMERO_GEOGRAFICO" type="tns:geoNumber"/>
+					<xs:element minOccurs="0" name="MOVIL_CONTACTO" type="tns:mNumber"/>
+					<xs:element minOccurs="0" name="FECHAS" type="tns:fecha"/>
+				</xs:sequence>
+			</xs:complexType>
+			<!-- parámetro de entrada-->
+			<xs:element name="CoverageRequestById" type="tns:CoverageRequestByIdType"/>
+			<xs:complexType name="CoverageRequestByIdType">
+				<xs:sequence>
+					<xs:element name="ID_CONSULTA" type="xs:integer"/>
+					<xs:element name="CANAL" type="tns:ChannelType"/>
+					<xs:element name="USUARIO" type="tns:fiftyChar"/>
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="CoverageWebService_getService">
+		<wsdl:part name="getService" element = "tns:CoverageRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CoverageWebService_getServiceById">
+		<wsdl:part name="getServiceById" element="tns:CoverageRequestById"/>
+	</wsdl:message>
+	<wsdl:message name="CoverageWebService_getResponse">
+		<wsdl:part name="getResponse" element="tns:CoverageResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CoverageWebService_getResponseById">
+		<wsdl:part name="getResponseById" element="tns:CoverageResponseById"/>
+	</wsdl:message>
+	<wsdl:portType name="CoverageWebService">
+		<wsdl:operation name="getService" parameterOrder="getService">
+			<wsdl:input message="tns:CoverageWebService_getService"/>
+			<wsdl:output message="tns:CoverageWebService_getResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getServiceById" parameterOrder="getServiceById">
+			<wsdl:input message="tns:CoverageWebService_getServiceById"/>
+			<wsdl:output message="tns:CoverageWebService_getResponseById"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="CoverageWebServiceBinding" type="tns:CoverageWebService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="getService">
+			<soap:operation/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getServiceById">
+			<soap:operation/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="CoverageWebService">
+		<wsdl:port name="CoverageWebServicePort" binding="tns:CoverageWebServiceBinding">
+			<soap:address location="xxxx"/>
+		</wsdl:port>
+	</wsdl:service>
+	<!-- datos que participan en la operación -->
+	<!-- operaciones posibles y mensajes vinculados -->
+	<!-- formato y protocolo-->
+	<!-- servicio -->
+</wsdl:definitions>
+

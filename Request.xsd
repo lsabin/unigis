@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		xmlns:tns="http://webservices.cadi.tele2.es/tns" 
+	    targetNamespace="http://webservices.cadi.tele2.es/tns" 
+	    xmlns:tnstypes="http://webservices.cadi.tele2.es/types"
+	    elementFormDefault="qualified">
+
+	<import namespace="http://webservices.cadi.tele2.es/types" schemaLocation="Types.xsd" />	
+
+	<element name="CoverageRequest" type="tns:CoverageRequestType"/>
+	<complexType name="CoverageRequestType">
+		<sequence>
+			<element minOccurs="0" name="DIRECCION" type="tnstypes:place"/>
+			<element minOccurs="0" name="COORDENADAS" type="tnstypes:coordinates"/>
+			<element minOccurs="0" name="NUMERO_GEOGRAFICO" type="tnstypes:geoNumber"/>
+			<element minOccurs="0" name="MOVIL_CONTACTO" type="tnstypes:mNumber"/>
+			<element name="CANAL" type="tnstypes:ChannelType"/>
+			<element name="USUARIO" type="tnstypes:fiftyChar"/>
+		</sequence>
+	</complexType>
+
+</schema>
